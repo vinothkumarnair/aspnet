@@ -1,0 +1,86 @@
+﻿@using Security.Sample.MVC.Models
+@model LoginModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<style>
+    .login-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 300px;
+        margin-left: -150px;
+        margin-top: -150px;
+    }
+
+    .panel-heading {
+        font-size: x-large;
+    }
+</style>
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+{
+   
+
+    <div class="login-wrapper">
+        <form action="#" role="form">
+
+            <div class="popup-header">
+                <a href="#" class="pull-left"></a><span class="panel-heading">Login</span>
+                <div class="btn-group pull-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"></a>
+                    <ul class="dropdown-menu icons-right dropdown-menu-right"></ul>
+                </div>
+            </div>
+            <div class="well">
+
+                @if (ViewBag.InformationMessage != null)
+                {
+                <label style="color: darkseagreen">
+                    @ViewBag.InformationMessage
+                </label>
+                }
+                <label style="color: red">
+                    @Html.ValidationSummary(true)
+                </label>
+
+                <div class="form-group has-feedback">
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+
+                    <i class="icon-users form-control-feedback"></i>
+                </div>
+                <div class="form-group has-feedback">
+
+                    @Html.LabelFor(m => m.Password)
+
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+                    <i class="icon-lock form-control-feedback"></i>
+                </div>
+                <div class="row form-actions">
+
+                    <div class="col-xs-6">
+                        <button id="SubmitMe" type="submit" class="btn btn-warning pull-right"><i class="icon-menu2"></i>Sign in</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xs-12">
+                <div class="checkbox checkbox-success">
+                    <a href="@Url.Action("ForgotPassword", "Account")">
+                        <i class="icon-quill2"></i>Forgot&nbsp;Password?
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

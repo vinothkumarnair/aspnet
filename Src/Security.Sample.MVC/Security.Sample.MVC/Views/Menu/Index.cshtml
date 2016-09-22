@@ -1,0 +1,32 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<Security.Sample.Core.Model.Menu>
+
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.Menus = Model;
+    //   Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+<ul class="info-blocks">
+
+
+    @foreach (var item in Model)
+    {
+        <li class="bg-primary">
+            <div class="top-info"><a href="@Url.Action(item.ActionName, item.ControllerName)">@item.MenuName</a></div>
+            <a href="@Url.Action(item.ActionName, item.ControllerName)">@Html.Raw(item.Icon)</a><span class="bottom-info bg-danger">@item.MenuName</span>
+        </li>
+    }
+</ul>
+
+<div class="page" align="center">
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+</div>
+
+

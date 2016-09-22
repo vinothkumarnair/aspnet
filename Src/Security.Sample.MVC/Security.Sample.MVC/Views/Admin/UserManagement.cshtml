@@ -1,0 +1,173 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model Security.Sample.MVC.Models.UserListModels
+@{
+    ViewBag.Title = "Manage Users";
+}
+@using (@Html.BeginForm("UserManagement", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal validate" }))
+{
+    
+    <div class="panel-group block">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h6 class="panel-title panel-trigger">
+                    <a data-toggle="collapse" href="#question1">Search
+                    </a>
+                </h6>
+            </div>
+            <div id="question1" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label text-right">Role :</label>
+                        <div class="col-sm-10">
+                         @Html.DropDownListFor(model => model.SelectedRoleId, new SelectList(Model.RoleList, "Id", "Name"), "Choose a Role...", new { @class="required select-full form-control" })
+  
+
+                        </div>
+                    </div>
+                  
+
+           
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label text-right">First Name:</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.FirstName)
+
+                        </div>
+                    </div>
+                  
+                        <div class="form-group">
+                        <label class="col-sm-2 control-label text-right">Last Name:</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LastName)
+
+                        </div>
+                    </div> 
+                    <div class="form-actions text-right">
+                        <input type="submit" value="Search" class="btn btn-primary" id="SubmitMe" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+ 
+<!-- Bordered table -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="icon-users2"></i>User List</h6>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th >Name
+            </th>
+            <th>User Name
+            </th>
+            <th>Role
+            </th>
+            <th>Email
+            </th>
+            <th>Mobile
+            </th>
+            
+            <th>Edit</th>
+                     <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Users)
+                {
+                    <tr>
+                       <td>
+                        @Html.DisplayFor(modelItem => item.FirstName),  @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Login)
+                    </td>
+
+                    <td>
+                        @foreach (var role in item.Roles)
+                    {
+                            @Html.DisplayFor(modelItem => role.Name)
+                    }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Phone))
+                       {
+                            @Html.DisplayFor(modelItem => item.Phone)
+                       }
+                        else
+                        {
+                            <p>N/A</p>
+                        }
+                       
+                    </td>
+                  
+                  
+
+                 
+
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-icon btn-success dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-cog4"></i>
+                                </button>
+                                <ul class="dropdown-menu icons-right dropdown-menu-right">
+                                    <li>
+                                        <a href="@Url.Action("Edit", "Admin", new { id = item.Id })">
+                                            <i class="icon-quill2"></i>Edit
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </td>
+
+                         <td class="text-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-icon btn-success dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-cog4"></i>
+                                </button>
+                                <ul class="dropdown-menu icons-right dropdown-menu-right">
+                                    <li>
+                                        <a href="@Url.Action("Delete", "Admin", new { id = item.Id })">
+                                            <i class="icon-quill2"></i>Delete
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                   @Html.PagedListPager(Model.Users, page => Url.Action("UserManagement", new Security.Sample.MVC.Models.UserListModels  { PageNumber=page,FirstName=Model.FirstName,LastName=Model.LastName,SelectedRoleId=Model.SelectedRoleId }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<!-- /bordered table -->
+
+

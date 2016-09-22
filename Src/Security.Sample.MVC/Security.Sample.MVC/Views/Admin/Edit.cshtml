@@ -1,0 +1,45 @@
+﻿@model Security.Sample.MVC.Models.UserEditModels
+@{
+    HtmlHelper.ClientValidationEnabled = true;
+}
+<div class="block">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <h2>Edit Account</h2>
+
+        @Html.HiddenFor(model => model.Id)
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <label>Role: </label>
+                    @Html.DropDownListFor(m => m.SelectedRoleId, new SelectList(Model.RoleList, "Id", "Name"), "Choose a Role", new { @class = "form-control" })
+
+                </div>
+
+                <div class="col-md-6">
+                    <label>Is Active? </label>
+                    @Html.CheckBoxFor(m => m.UserStatus, new { @class = "styled" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" id="SubmitMe">
+
+                </div>
+
+            </div>
+        </div>
+
+    }
+</div>
+
+
